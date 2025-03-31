@@ -1,5 +1,6 @@
 package br.insper.iam.usuario.controller;
 
+import br.insper.iam.usuario.CountUsuarioDTO;
 import br.insper.iam.usuario.Usuario;
 import br.insper.iam.usuario.UsuarioController;
 import br.insper.iam.usuario.UsuarioService;
@@ -44,8 +45,8 @@ public class UsuarioControllerTests {
     @Test
     void test_GetUsuarios() throws Exception {
         List<Usuario> usuarios = Arrays.asList(
-                new Usuario("João", "joao@example.com"),
-                new Usuario("Maria", "maria@example.com")
+                new Usuario("João", "joao@example.com", "ADMIN"),
+                new Usuario("Maria", "maria@example.com", "ADMIN")
         );
 
 
@@ -71,12 +72,23 @@ public class UsuarioControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
 
         mockMvc.perform(
-                    MockMvcRequestBuilders.post("/api/usuario")
-                            .content(objectMapper.writeValueAsString(usuario))
-                            .contentType(MediaType.APPLICATION_JSON)
+                        MockMvcRequestBuilders.post("/api/usuario")
+                                .content(objectMapper.writeValueAsString(usuario))
+                                .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(usuario)));
 
+    }
+
+
+    @Test
+    void test_CountUsuarios() throws Exception {
+
+        CountUsuarioDTO countUsuarioDTO = new CountUsuarioDTO(5L);
+
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/usuario/count"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
