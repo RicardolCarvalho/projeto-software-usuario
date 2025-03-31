@@ -50,8 +50,9 @@ jobs:
           docker stop usuario
           docker rm --force usuario
           docker run -d -p 8080:8080 \
+            -e spring_profiles_active=git \
             -e USER_DB=${{ secrets.USER_DB }} \
-            -e PATH_DB=${{ secrets.PATH_DB }} \
-            -e NAME_DB=${{ secrets.NAME_DB }} \
             -e PASS_DB=${{ secrets.PASS_DB }} \
+            -e PATH_DB=${{ secrets.PATH_DB }} \
+            -e NAME_GIT_DB=${{ secrets.NAME_DB }} \
             --name usuario --network=rede ricardolcarvalho/usuario-ci:${{ github.sha }}
