@@ -46,4 +46,14 @@ public class UsuarioService {
         Long count = usuarioRepository.count();
         return new CountUsuarioDTO(count);
     }
+
+    public void validateUser(String user, String password) {
+        Usuario usuario = usuarioRepository.findByEmail(user);
+        if (usuario == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+        if (!usuario.getPapel().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
